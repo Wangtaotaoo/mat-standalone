@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Copyright (c) 2009, 2024 SAP AG and others
+    All rights reserved. This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License 2.0
+    which accompanies this distribution, and is available at
+    https://www.eclipse.org/legal/epl-2.0/
+
+    SPDX-License-Identifier: EPL-2.0
+   
+    Contributors:
+        SAP AG - initial implementation
+ -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>org.eclipse.mat</groupId>
+	<artifactId>parent</artifactId>
+	<version>1.17.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<name>MAT Parent</name>
+	<description>Java heap analyzer that helps you find memory leaks and reduce memory consumption.</description>
+	<url>https://eclipse.dev/mat/</url>
+
+	<licenses>
+		<license>
+			<name>EPL-2.0</name>
+			<url>https://www.eclipse.org/org/documents/epl-2.0/EPL-2.0.txt</url>
+		</license>
+	</licenses>
+
+	<organization>
+		<name>Eclipse Memory Analyzer Project</name>
+		<url>https://projects.eclipse.org/projects/tools.mat</url>
+	</organization>
+
+	<scm>
+		<url>https://git.eclipse.org/r/mat/org.eclipse.mat</url>
+		<developerConnection>scm:git:https://git.eclipse.org/r/mat/org.eclipse.mat</developerConnection>
+	</scm>
+
+	<issueManagement>
+		<system>Bugzilla</system>
+		<url>https://bugs.eclipse.org/bugs/buglist.cgi?product=MAT</url>
+	</issueManagement>
+
+	<ciManagement>
+		<system>Jenkins</system>
+		<url>https://ci.eclipse.org/mat</url>
+	</ciManagement>
+
+	<properties>
+		<tycho-version>4.0.9</tycho-version>
+		<signer-input-directory>/home/data/httpd/download-staging.priv/tools/mat</signer-input-directory>
+		<download-publish-path>/home/data/httpd/download.eclipse.org/mat/snapshots/update-site</download-publish-path>
+		<download-remote-publish-path>genie.mat@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/mat/snapshots/update-site</download-remote-publish-path>
+		<download-publish-rcp-path>/home/data/httpd/download.eclipse.org/mat/snapshots/rcp</download-publish-rcp-path>
+		<download-remote-publish-rcp-path>genie.mat@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/mat/snapshots/rcp</download-remote-publish-rcp-path>
+		<!-- mat-target specifies which .target definition file will be used -->
+		<mat-target>mat-2024-12</mat-target>
+		<!-- mat-product specifies which .product definition file will be used -->
+		<mat-product>${mat-target}</mat-product>
+		<!-- mat-release-repo-url specifies from which p2 repo the MAT bundles 
+			come, when the build-release profile is used -->
+		<mat-release-repo-url>http://download.eclipse.org/mat/latest/update-site/</mat-release-repo-url>
+		<mat-tests-parameters>-Xmx1024m</mat-tests-parameters>
+		<p2.mirrorsPrefix>/mat/1.17.0/update-site/</p2.mirrorsPrefix>
+		<p2.statsURI>https://download.eclipse.org/stats/mat</p2.statsURI>
+		<p2.mirrorsURL>https://www.eclipse.org/downloads/download.php?format=xml&amp;file=${p2.mirrorsPrefix}</p2.mirrorsURL>
+		<!--  Track the branding plugin for each feature. Current doesn't work and all artifacts tracked. -->
+		<p2.statsTrackedArtifacts>org.eclipse.mat.api,org.eclipse.mat.chart,org.eclipse.mat.rcp</p2.statsTrackedArtifacts>
+		<!-- For Mac notarizing -->
+		<!-- 
+		<cbi-repo-url>https://repo.eclipse.org/content/repositories/cbi-releases/</cbi-repo-url>
+		<cbi-plugins.version>1.1.7</cbi-plugins.version>
+		<cbi-repo-url>https://repo.eclipse.org/content/repositories/cbi-snapshots/</cbi-repo-url>
+		<cbi-repo-url>https://repo.eclipse.org/content/repositories/cbi-releases/</cbi-repo-url>
+		-->
+		<eclipse-repo.url>https://repo.eclipse.org/content/repositories/cbi/</eclipse-repo.url>
+		<cbi-snapshots-repo.url>https://repo.eclipse.org/content/repositories/cbi-snapshots/</cbi-snapshots-repo.url>
+		<cbi-releases-repo.url>https://repo.eclipse.org/content/repositories/cbi-releases/</cbi-releases-repo.url>
+		<cbi-repo-url>https://repo.eclipse.org/content/repositories/cbi-releases/</cbi-repo-url>
+		<cbi-plugins.version>1.3.1</cbi-plugins.version>
+		<macSigner.forceContinue>false</macSigner.forceContinue>
+
+		<!-- license check -->
+		<dash.fail>true</dash.fail>
+		<dash.projectId>tools.mat</dash.projectId>
+	</properties>
+	<pluginRepositories>
+		<!-- Following https://github.com/eclipse/dash-licenses#example-maven-plugin -->
+		<pluginRepository>
+			<id>dash-licenses</id>
+			<url>https://repo.eclipse.org/content/repositories/dash-licenses/</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
+
+	<profiles>
+		<!-- build-snapshot is the default profile - it will build all modules: 
+			plugins, features, an update site and standalone RCP products -->
+		<profile>
+			<id>build-snapshot</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<modules>
+				<!-- target definition -->
+				<module>../org.eclipse.mat.targetdef</module>
+				<!-- plugins -->
+				<module>../plugins/org.eclipse.mat.api</module>
+				<module>../plugins/org.eclipse.mat.chart</module>
+				<module>../plugins/org.eclipse.mat.chart.ui</module>
+				<module>../plugins/org.eclipse.mat.dtfj</module>
+				<module>../plugins/org.eclipse.mat.hprof</module>
+				<module>../plugins/org.eclipse.mat.jdt</module>
+				<module>../plugins/org.eclipse.mat.parser</module>
+				<module>../plugins/org.eclipse.mat.report</module>
+				<module>../plugins/org.eclipse.mat.ibmdumps</module>
+				<module>../plugins/org.eclipse.mat.jruby.resolver</module>
+				<module>../plugins/org.eclipse.mat.tests</module>
+				<module>../plugins/org.eclipse.mat.ui</module>
+				<module>../plugins/org.eclipse.mat.ui.help</module>
+				<module>../plugins/org.eclipse.mat.ui.rcp</module>
+				<!-- features -->
+				<module>../features/org.eclipse.mat.chart.feature</module>
+				<module>../features/org.eclipse.mat.feature</module>
+				<module>../features/org.eclipse.mat.ui.rcp.feature</module>
+				<!-- update site -->
+				<module>../org.eclipse.mat.updatesite</module>
+				<!-- standalone RCP application -->
+				<module>../org.eclipse.mat.product</module>
+				<!-- UI tests on the build product -->
+				<module>../plugins/org.eclipse.mat.ui.rcp.tests</module>
+			</modules>
+		</profile>
+
+		<!-- the build-release-rcp profile will build only the standalone RCP products 
+			of MAT, taking the MAT plugins and features from an already existing MAT 
+			p2 repository specified by the mat-release-repo-url property -->
+		<profile>
+			<id>build-release-rcp</id>
+			<properties>
+				<dash.fail>false</dash.fail>
+			</properties>
+			<repositories>
+				<repository>
+					<id>mat-released</id>
+					<url>${mat-release-repo-url}</url>
+					<layout>p2</layout>
+				</repository>
+			</repositories>
+			<modules>
+				<!-- target definition -->
+				<module>../org.eclipse.mat.targetdef</module>
+				<!-- standalone RCP application -->
+				<module>../org.eclipse.mat.product</module>
+				<!-- UI tests on the build product -->
+				<module>../plugins/org.eclipse.mat.ui.rcp.tests</module>
+			</modules>
+		</profile>
+
+		<!-- the build-server profile activates certain action (e.g. signing the 
+			bundles), which only work if the build is running on the Eclipse Hudson infrastructure. -->
+		<profile>
+			<id>build-server</id>
+			<pluginRepositories>
+				<!-- Repository for the signing/publishing plugins -->
+				<pluginRepository>
+					<id>maven.eclipse.org</id>
+					<url>${cbi-repo-url}</url>
+				</pluginRepository>
+				<pluginRepository>
+					<id>cbi-snapshots</id>
+					<url>${cbi-snapshots-repo.url}</url>
+					<snapshots>
+						<enabled>true</enabled>
+					</snapshots>
+				</pluginRepository>
+				<pluginRepository>
+					<id>cbi-releases</id>
+					<url>${cbi-releases-repo.url}</url>
+					<releases>
+						<enabled>true</enabled>
+					</releases>
+					<snapshots>
+						<enabled>true</enabled>
+					</snapshots>
+				</pluginRepository>
+				<pluginRepository>
+					<id>eclipse</id>
+					<url>${eclipse-repo.url}</url>
+					<releases>
+						<enabled>true</enabled>
+					</releases>
+					<snapshots>
+						<enabled>true</enabled>
+					</snapshots>
+				</pluginRepository>
+			</pluginRepositories>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.eclipse.tycho</groupId>
+						<artifactId>target-platform-configuration</artifactId>
+						<version>${tycho-version}</version>
+					</plugin>
+					<plugin>
+						<groupId>org.eclipse.tycho</groupId>
+						<artifactId>tycho-p2-repository-plugin</artifactId>
+						<version>${tycho-version}</version>
+						<configuration>
+							<xzCompress>true</xzCompress>
+							<extraArtifactRepositoryProperties>
+								<p2.statsURI>${p2.statsURI}</p2.statsURI>
+								<p2.mirrorsURL>${p2.mirrorsURL}</p2.mirrorsURL>
+							</extraArtifactRepositoryProperties>
+						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.eclipse.cbi.maven.plugins</groupId>
+						<artifactId>eclipse-jarsigner-plugin</artifactId>
+						<version>${cbi-plugins.version}</version>
+						<executions>
+							<execution>
+								<id>sign</id>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+								<phase>verify</phase>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.eclipse.tycho</groupId>
+						<artifactId>tycho-p2-plugin</artifactId>
+						<version>${tycho-version}</version>
+						<executions>
+							<execution>
+								<id>p2-metadata</id>
+								<goals>
+									<goal>p2-metadata</goal>
+								</goals>
+								<phase>verify</phase>
+							</execution>
+						</executions>
+						<configuration>
+							<defaultP2Metadata>false</defaultP2Metadata>
+							<generateDownloadStatsProperty>true</generateDownloadStatsProperty>
+						</configuration>
+					</plugin>
+					<!-- Disable the default deploy as we don't deploy Maven artifacts to download.eclipse.org -->
+					<plugin>
+						<artifactId>maven-deploy-plugin</artifactId>
+						<version>2.8.2</version>
+						<configuration>
+							<skip>true</skip>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<version>3.4.1</version>
+				<executions>
+					<execution>
+						<id>enforce-maven</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<requireMavenVersion>
+									<version>3.9</version>
+								</requireMavenVersion>
+							</rules>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-maven-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<extensions>true</extensions>
+				<configuration>
+					<generateDownloadStatsProperty>true</generateDownloadStatsProperty>
+					<extraArtifactRepositoryProperties>
+						<p2.statsURI>http://download.eclipse.org/stats/</p2.statsURI>
+					</extraArtifactRepositoryProperties>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>target-platform-configuration</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<requireEagerResolve>true</requireEagerResolve>
+					<environments>
+						<environment>
+							<os>win32</os>
+							<ws>win32</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>macosx</os>
+							<ws>cocoa</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>macosx</os>
+							<ws>cocoa</ws>
+							<arch>aarch64</arch>
+						</environment>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>ppc64le</arch>
+						</environment>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>aarch64</arch>
+						</environment>
+					</environments>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.dash</groupId>
+				<artifactId>license-tool-plugin</artifactId>
+				<version>1.1.0</version>
+				<executions>
+					<execution>
+						<id>license-check</id>
+						<goals>
+							<goal>license-check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.cyclonedx</groupId>
+				<artifactId>cyclonedx-maven-plugin</artifactId>
+				<version>2.7.9</version>
+				<configuration>
+					<projectType>library</projectType>
+					<schemaVersion>1.4</schemaVersion>
+					<includeBomSerialNumber>true</includeBomSerialNumber>
+					<includeCompileScope>true</includeCompileScope>
+					<includeProvidedScope>true</includeProvidedScope>
+					<includeRuntimeScope>true</includeRuntimeScope>
+					<includeSystemScope>true</includeSystemScope>
+					<includeTestScope>false</includeTestScope>
+					<includeLicenseText>false</includeLicenseText>
+					<outputReactorProjects>true</outputReactorProjects>
+					<outputFormat>json</outputFormat>
+					<outputName>bom</outputName>
+					<outputDirectory>${project.build.directory}</outputDirectory>
+					<excludeArtifactId>org.eclipse.mat.ui.rcp.tests,org.eclipse.mat.tests</excludeArtifactId>
+					<verbose>false</verbose>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>makeAggregateBom</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>tycho-compiler-plugin</artifactId>
+					<version>${tycho-version}</version>
+					<configuration>
+						<encoding>UTF-8</encoding>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>2.4.1</version>
+					<configuration>
+						<encoding>ISO-8859-1</encoding>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>tycho-surefire-plugin</artifactId>
+					<version>${tycho-version}</version>
+					<configuration>
+						<argLine>-ea ${mat-tests-parameters} --add-exports=java.base/jdk.internal.org.objectweb.asm=ALL-UNNAMED</argLine>
+						<!--  debugging OOM on CI - make the temp files appear in the workspace -->
+						<!--  <argLine>-ea -Xmx1024m -Djava.io.tmpdir=. -XX:+HeapDumpOnOutOfMemoryError</argLine>-->
+						<!-- <testFailureIgnore>true</testFailureIgnore> -->
+						<includes>
+							<include>**/AllTests.class</include>
+						</includes>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>target-platform-configuration</artifactId>
+					<version>${tycho-version}</version>
+					<configuration>
+						<target>
+							<artifact>
+								<groupId>org.eclipse.mat</groupId>
+								<artifactId>org.eclipse.mat.targetdef</artifactId>
+								<version>${project.version}</version>
+								<classifier>${mat-target}</classifier>
+							</artifact>
+						</target>
+						<!-- List of bundles to be excluded from the target platform. These 
+							bundles are comming as optional dependencies for other bundles, and we have 
+							no CQs to deliver them -->
+						<filters>
+							<filter>
+								<type>eclipse-plugin</type>
+								<id>org.apache.lucene.highlighter</id>
+								<removeAll />
+							</filter>
+							<filter>
+								<type>eclipse-plugin</type>
+								<id>org.apache.lucene.memory</id>
+								<removeAll />
+							</filter>
+							<filter>
+								<type>eclipse-plugin</type>
+								<id>org.apache.lucene.misc</id>
+								<removeAll />
+							</filter>
+							<filter>
+								<type>eclipse-plugin</type>
+								<id>org.apache.lucene.queries</id>
+								<removeAll />
+							</filter>
+							<filter>
+								<type>eclipse-plugin</type>
+								<id>org.apache.lucene.snowball</id>
+								<removeAll />
+							</filter>
+							<filter>
+								<type>eclipse-plugin</type>
+								<id>org.apache.lucene.spellchecker</id>
+								<removeAll />
+							</filter>
+						</filters>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>com.github.spotbugs</groupId>
+					<artifactId>spotbugs-maven-plugin</artifactId>
+					<version>4.7.3.5</version>
+					<dependencies>
+						<!-- overwrite dependency on spotbugs if you want to specify the version 
+							of spotbugs -->
+						<dependency>
+							<groupId>com.github.spotbugs</groupId>
+							<artifactId>spotbugs</artifactId>
+							<version>4.7.3</version>
+						</dependency>
+					</dependencies>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-ssh-external</artifactId>
+				<version>3.4.1</version>
+			</extension>
+		</extensions>
+	</build>
+</project>
+

@@ -1,0 +1,20 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %Bundle-Name
+Bundle-SymbolicName: org.eclipse.mat.ui.help;singleton:=true
+Bundle-Version: 1.17.0.qualifier
+Bundle-Vendor: %Bundle-Vendor
+Require-Bundle: org.eclipse.core.runtime;bundle-version="3.3.100",
+ org.eclipse.help;bundle-version="3.3.0",
+ org.eclipse.help.base;bundle-version="3.3.0",
+ org.eclipse.help.ui;bundle-version="3.3.0",
+ org.eclipse.help.webapp;bundle-version="3.3.0"
+Bundle-Localization: plugin
+Import-Package: org.eclipse.ui.intro,
+ org.eclipse.ui.cheatsheets
+Bundle-Copyright: Copyright (c) 2008, 2022 SAP AG and IBM Corporation. 
+ All rights reserved. This program and the accompanying materials 
+ are made available under the terms of the Eclipse Public License 2.0 
+ which accompanies this distribution, and is available at 
+ https://www.eclipse.org/legal/epl-2.0/
+Bundle-License: EPL-2.0;link="https://www.eclipse.org/org/documents/epl-2.0/EPL-2.0.txt"

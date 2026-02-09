@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Copyright (c) 2018,2022 IBM Corporation.
+    All rights reserved. This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License 2.0
+    which accompanies this distribution, and is available at
+    https://www.eclipse.org/legal/epl-2.0/
+
+    SPDX-License-Identifier: EPL-2.0
+   
+    Contributors:
+        Andrew Johnson - initial creation
+ -->
+<query name="%report.exporthprof.title Export HPROF" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.eclipse.org/mat/report.xsd"
+	xsi:schemaLocation="http://www.eclipse.org/mat/report.xsd platform:/resource/org.eclipse.mat.report/schema/report.xsd">
+
+	<param key="output" value=""></param>
+	<param key="redact" value="NONE"></param>
+	<param key="map" value=""></param>
+	<param key="skip" value="java\\..*|boolean|byte|char|short|int|long|float|double|void"></param>
+	<param key="avoid" value="%report.exporthprof.defaultavoid .*ae.*|.*oe.*|.*uu.*|.*kr.*|.*kw.*|.*[cC]ie.*|.*[^c]ei.*"></param>
+	<param key="options" value=""></param>
+
+	<command>export_hprof -output "${output}" -map "${map}" -redact ${redact} -skip ${skip} -avoid ${avoid} ${options}</command>
+</query>

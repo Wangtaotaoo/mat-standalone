@@ -1,0 +1,32 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %Bundle-Name
+Bundle-Vendor: %Bundle-Vendor
+Bundle-SymbolicName: org.eclipse.mat.report;singleton:=true
+Bundle-Version: 1.17.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: org.eclipse.mat,
+ org.eclipse.mat.collect,
+ org.eclipse.mat.query,
+ org.eclipse.mat.query.annotations,
+ org.eclipse.mat.query.annotations.descriptors,
+ org.eclipse.mat.query.quantize,
+ org.eclipse.mat.query.refined,
+ org.eclipse.mat.query.registry;x-friends:="org.eclipse.mat.ui,org.eclipse.mat.api,org.eclipse.mat.chart,org.eclipse.mat.chart.ui",
+ org.eclipse.mat.query.results,
+ org.eclipse.mat.report,
+ org.eclipse.mat.util
+Require-Bundle: org.eclipse.core.runtime;bundle-version="3.3.100",
+ org.eclipse.core.resources;bundle-version="3.3.0"
+Eclipse-BuddyPolicy: dependent
+Bundle-ActivationPolicy: lazy
+Eclipse-LazyStart: true
+Bundle-Activator: org.eclipse.mat.report.internal.ReportPlugin
+Import-Package: com.ibm.icu.text
+Bundle-Localization: plugin
+Bundle-Copyright: Copyright (c) 2008, 2022 SAP AG and IBM Corporation. 
+ All rights reserved. This program and the accompanying materials 
+ are made available under the terms of the Eclipse Public License 2.0 
+ which accompanies this distribution, and is available at 
+ https://www.eclipse.org/legal/epl-2.0/
+Bundle-License: EPL-2.0;link="https://www.eclipse.org/org/documents/epl-2.0/EPL-2.0.txt"

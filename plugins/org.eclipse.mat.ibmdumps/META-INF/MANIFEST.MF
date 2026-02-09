@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-SymbolicName: org.eclipse.mat.ibmdumps;singleton:=true
+Bundle-Name: %Bundle-Name
+Bundle-Vendor: %Bundle-Vendor
+Bundle-Version: 1.17.0.qualifier
+Require-Bundle: org.eclipse.core.runtime;bundle-version="3.4",
+ org.eclipse.mat.api;bundle-version="1.0.0",
+ org.eclipse.mat.report;bundle-version="1.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Eclipse-LazyStart: true
+Bundle-ActivationPolicy: lazy
+Bundle-Localization: plugin
+Bundle-Copyright: Copyright (c) 2010, 2022 IBM Corporation. 
+ All rights reserved. This program and the accompanying materials 
+ are made available under the terms of the Eclipse Public License 2.0 
+ which accompanies this distribution, and is available at 
+ https://www.eclipse.org/legal/epl-2.0/
+Bundle-License: EPL-2.0;link="https://www.eclipse.org/org/documents/epl-2.0/EPL-2.0.txt"
+Bundle-ClassPath: .,
+ external:$java.home$/lib/ext/healthcenter.jar,
+ external:$java.home$/../lib/tools.jar

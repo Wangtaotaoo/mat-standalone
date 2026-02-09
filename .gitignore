@@ -1,0 +1,9 @@
+bin/
+target/
+doc/
+build/
+.gradle/
+.DS_Store
+*.iml
+.idea/
+/parent/mat.app

@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<!--
+    Copyright (c) 2008, 2023 SAP AG and IBM Corporation.
+    All rights reserved. This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License 2.0
+    which accompanies this distribution, and is available at
+    https://www.eclipse.org/legal/epl-2.0/
+
+    SPDX-License-Identifier: EPL-2.0
+   
+    Contributors:
+        SAP AG - initial API and implementation
+        Andrew Johnson/IBM Corporation - additional queries and resolvers
+ -->
+
+<plugin>
+	<extension-point id="factory" name="%extension-point.factory.name" schema="schema/factory.exsd"/>
+	
+	<extension-point id="nameResolver" name="%extension-point.classResolver.name" schema="schema/nameResolver.exsd"/>
+	<extension-point id="threadResolver" name="%extension-point.threadResolver.name" schema="schema/threadResolver.exsd"/>
+	<extension-point id="requestResolver" name="%extension-point.requestResolver.name" schema="schema/requestResolver.exsd"/>
+	<extension-point id="ticketResolver" name="%extension-point.ticketResolver.name" schema="schema/ticketResolver.exsd"/>
+	<extension-point id="heapDumpProvider" name="%extension-point.heapDumpProvider.name" schema="schema/heapDumpProvider.exsd"/>
+	<extension-point id="collectionExtractorProvider" name="%extension-point.collectionExtractorProvider.name" schema="schema/collectionExtractorProvider.exsd"/>
+	
+	<extension point="org.eclipse.mat.report.query">
+		<!-- internal queries exposed to the UI -->
+		<query impl="org.eclipse.mat.internal.snapshot.inspections.DominatorQuery"/>
+		<query impl="org.eclipse.mat.internal.snapshot.inspections.ShowInDominatorQuery"/>
+		<query impl="org.eclipse.mat.internal.snapshot.inspections.Path2GCRootsQuery"/>
+		<query impl="org.eclipse.mat.internal.snapshot.inspections.MultiplePath2GCRootsQuery"/>
+		<!-- comparisons -->
+		<query impl="org.eclipse.mat.internal.snapshot.inspections.CompareTablesQuery"/>
+		<query impl="org.eclipse.mat.inspections.SimpleComparison"/>
+		
+		<!-- core -->
+		<query impl="org.eclipse.mat.inspections.HistogramQuery"/>
+		<query impl="org.eclipse.mat.inspections.RetainedSetQuery"/>
+		<query impl="org.eclipse.mat.inspections.CustomizedRetainedSetQuery"/>
+		<query impl="org.eclipse.mat.inspections.DuplicatedClassesQuery"/>
+		<query impl="org.eclipse.mat.inspections.GroupByValueQuery"/>
+		<query impl="org.eclipse.mat.inspections.OQLQuery"/>
+		<query impl="org.eclipse.mat.inspections.ImmediateDominatorsQuery"/>
+		<query impl="org.eclipse.mat.inspections.TopConsumersQuery"/>
+		<query impl="org.eclipse.mat.inspections.TopConsumers2Query"/>
+		<query impl="org.eclipse.mat.inspections.FindStringsQuery"/>
+		<query impl="org.eclipse.mat.inspections.SystemPropertiesQuery"/>
+		<query impl="org.eclipse.mat.inspections.HeapDumpInfoQuery"/>
+		<query impl="org.eclipse.mat.inspections.ObjectListQuery"/>
+		<query impl="org.eclipse.mat.inspections.ClassReferrersQuery"/>
+		<query impl="org.eclipse.mat.inspections.BiggestObjectsPieQuery"/>
+		<query impl="org.eclipse.mat.inspections.ClassLoaderExplorerQuery"/>
+		<query impl="org.eclipse.mat.inspections.GCRootsQuery"/>
+		<query impl="org.eclipse.mat.inspections.SelectObjectsByFieldQuery"/>
+
+		<!-- basics -->		
+		<query impl="org.eclipse.mat.inspections.WasteInCharArraysQuery" />
+		<query impl="org.eclipse.mat.inspections.UnreachableObjectsQuery"/>
+		
+		<!-- leak identification -->
+		<query impl="org.eclipse.mat.inspections.LeakHunterQuery"/>
+		<query impl="org.eclipse.mat.inspections.LeakHunterQuery2"/>
+		<query impl="org.eclipse.mat.inspections.FindLeaksQuery"/>
+		<query impl="org.eclipse.mat.inspections.FindLeaksQuery2"/>
+		<query impl="org.eclipse.mat.inspections.ComparisonReport"/>
+		<query impl="org.eclipse.mat.inspections.BigDropsQuery"/>
+		<query impl="org.eclipse.mat.inspections.DeltaHistogram"/>
+		<query impl="org.eclipse.mat.inspections.ReferenceLeakQuery"/>
+	
+		<!-- Threads -->
+		<query impl="org.eclipse.mat.inspections.threads.ThreadOverviewQuery"/>
+		<query impl="org.eclipse.mat.inspections.threads.ThreadInfoQuery"/>
+		<query impl="org.eclipse.mat.inspections.threads.ThreadStackQuery"/>
+		
+		<!-- Collections -->
+		<query impl="org.eclipse.mat.inspections.collections.ArrayFillRatioQuery"/>
+		<query impl="org.eclipse.mat.inspections.collections.ArraysBySizeQuery"/>
+		<query impl="org.eclipse.mat.inspections.collections.CollectionFillRatioQuery"/>
+		<query impl="org.eclipse.mat.inspections.collections.CollectionsBySizeQuery"/>
+		<query impl="org.eclipse.mat.inspections.collections.HashEntriesQuery"/>
+		<query impl="org.eclipse.mat.inspections.collections.MapCollisionRatioQuery"/>
+		<query impl="org.eclipse.mat.inspections.collections.ExtractListValuesQuery"/>
+		<query impl="org.eclipse.mat.inspections.collections.HashSetValuesQuery"/>
+		<query impl="org.eclipse.mat.inspections.collections.PrimitiveArraysWithAConstantValueQuery"/>
+	
+		<!-- Referents -->
+		<query impl="org.eclipse.mat.inspections.ReferenceQuery"/>
+		<query impl="org.eclipse.mat.inspections.WeakReferenceStatQuery"/>
+		<query impl="org.eclipse.mat.inspections.SoftReferenceStatQuery"/>
+		<query impl="org.eclipse.mat.inspections.FinalizerReferenceStatQuery"/>
+		<query impl="org.eclipse.mat.inspections.PhantomReferenceStatQuery"/>
+	
+		<!-- Finalizers -->
+		<query impl="org.eclipse.mat.inspections.finalizer.FinalizerQuery"/>
+		<query impl="org.eclipse.mat.inspections.finalizer.FinalizerInProcessingQuery"/>
+		<query impl="org.eclipse.mat.inspections.finalizer.FinalizerQueueQuery"/>
+		<query impl="org.eclipse.mat.inspections.finalizer.FinalizerThreadLocalsQuery"/>
+		<query impl="org.eclipse.mat.inspections.finalizer.FinalizerThreadQuery"/>
+	
+		<!-- Extra Information (this queries will appear on the toolbar or inside the overview pane) -->
+		
+		<query impl="org.eclipse.mat.inspections.component.ComponentReportQuery"/>
+		<query impl="org.eclipse.mat.inspections.component.TopComponentsReportQuery"/>
+		
+		<!-- eclipse -->
+		<query impl="org.eclipse.mat.inspections.eclipse.LeakingPlugins"/>
+		<query impl="org.eclipse.mat.inspections.osgi.BundleRegistryQuery"/>
+
+	</extension>
+	
+	<extension point="org.eclipse.mat.api.nameResolver">
+		<resolver impl="org.eclipse.mat.inspections.CommonNameResolver$StringResolver" />
+		<resolver impl="org.eclipse.mat.inspections.CommonNameResolver$StringBufferResolver" />
+		<resolver impl="org.eclipse.mat.inspections.CommonNameResolver$ThreadResolver" />
+		<resolver impl="org.eclipse.mat.inspections.CommonNameResolver$ThreadGroupResolver" />
+		<resolver impl="org.eclipse.mat.inspections.CommonNameResolver$ValueResolver" />
+		<resolver impl="org.eclipse.mat.inspections.CommonNameResolver$CharArrayResolver" />
+		<resolver impl="org.eclipse.mat.inspections.CommonNameResolver$ByteArrayResolver" />
+		<resolver impl="org.eclipse.mat.inspections.CommonNameResolver$URLResolver" />
+		<resolver impl="org.eclipse.mat.inspections.CommonNameResolver$URIResolver" />
+		<resolver impl="org.eclipse.mat.inspections.CommonNameResolver$AccessibleObjectResolver" />
+		<resolver impl="org.eclipse.mat.inspections.CommonNameResolver$FieldResolver" />
+		<resolver impl="org.eclipse.mat.inspections.CommonNameResolver$MethodResolver" />
+		<resolver impl="org.eclipse.mat.inspections.CommonNameResolver$ConstructorResolver" />
+		<resolver impl="org.eclipse.mat.inspections.CommonNameResolver$ClassTypeResolver" />
+		<resolver impl="org.eclipse.mat.inspections.CommonNameResolver$StackTraceElementResolver" />
+		<resolver impl="org.eclipse.mat.inspections.CommonNameResolver$EnumResolver" />
+		<resolver impl="org.eclipse.mat.inspections.CommonNameResolver$ExternalDataResolver" />
+		<resolver impl="org.eclipse.mat.inspections.CommonNameResolver$MemberNameResolver" />
+		<resolver impl="org.eclipse.mat.inspections.CommonNameResolver$ModuleResolver" />
+		<resolver impl="org.eclipse.mat.inspections.CommonNameResolver$LocaleResolver" />
+		<resolver impl="org.eclipse.mat.inspections.CommonNameResolver$SunLocaleResolver" />
+		<resolver impl="org.eclipse.mat.inspections.CommonNameResolver$ICUBaseLocaleResolver" />
+		<resolver impl="org.eclipse.mat.inspections.CommonNameResolver$ULocaleResolver" />
+		<resolver impl="org.eclipse.mat.inspections.CommonNameResolver$BigIntegerResolver" />
+		<resolver impl="org.eclipse.mat.inspections.CommonNameResolver$BigDecimalResolver" />
+		<!-- networking -->
+		<resolver impl="org.eclipse.mat.inspections.CommonNameResolver$Inet6AddressResolver"/>
+		<resolver impl="org.eclipse.mat.inspections.CommonNameResolver$Inet6AddressHolderResolver"/>
+		<resolver impl="org.eclipse.mat.inspections.CommonNameResolver$InetAddressResolver"/>
+		<resolver impl="org.eclipse.mat.inspections.CommonNameResolver$InetAddressHolderResolver"/>
+		<resolver impl="org.eclipse.mat.inspections.CommonNameResolver$InetSocketAddressResolver"/>
+		<resolver impl="org.eclipse.mat.inspections.CommonNameResolver$InetSocketAddressHolderResolver"/>
+		<resolver impl="org.eclipse.mat.inspections.CommonNameResolver$SocketChannelImpl"/>
+
+		<!-- eclipse -->
+		<resolver impl="org.eclipse.mat.inspections.eclipse.EclipseNameResolver$EclipseClassLoaderResolver" />
+		<resolver impl="org.eclipse.mat.inspections.eclipse.EclipseNameResolver$EclipseDefaultClassLoaderResolver" />
+		<resolver impl="org.eclipse.mat.inspections.eclipse.EclipseNameResolver$EquinoxClassLoaderResolver" />
+		<resolver impl="org.eclipse.mat.inspections.eclipse.EclipseNameResolver$StartupClassLoaderResolver" />
+		<resolver impl="org.eclipse.mat.inspections.eclipse.EclipseNameResolver$RGBResolver" />
+		<resolver impl="org.eclipse.mat.inspections.eclipse.EclipseNameResolver$PointResolver" />
+		<resolver impl="org.eclipse.mat.inspections.eclipse.EclipseNameResolver$RectangleResolver" />
+		<resolver impl="org.eclipse.mat.inspections.eclipse.EclipseNameResolver$OSGiFrameworkVersion" />
+		
+		<!-- jetty -->
+		<resolver impl="org.eclipse.mat.inspections.jetty.JettyNameResolvers$WebAppClassLoaderResolver"/>
+		<resolver impl="org.eclipse.mat.inspections.jetty.JettyNameResolvers$JasperLoaderResolver"/>
+
+		<!-- Wildfly / JBoss Enterprise Application Platform -->
+		<resolver impl="org.eclipse.mat.inspections.wildfly.WildflyJbossNameResolvers$ModuleClassLoaderResolver"/>
+
+		<!-- stacks as pseudo-objects -->
+		<resolver impl="org.eclipse.mat.inspections.threads.StackFrameResolver"/>
+	</extension>
+
+	<extension point="org.eclipse.mat.api.requestResolver">
+		<!-- jetty -->
+		<resolver impl="org.eclipse.mat.inspections.jetty.JettyRequestResolver"/>
+	</extension>
+	
+	<extension point="org.eclipse.mat.report.report">
+		<report id="suspects" name="%report.suspects.name"
+				description="%report.suspects.help"
+				file="META-INF/reports/suspects.xml" />
+		<report id="overview" name="%report.overview.name"
+				description="%report.overview.help"
+				file="META-INF/reports/overview.xml" />
+		<report id="top_components" name="%report.top_components.name"
+				description="%report.top_components.help"
+				file="META-INF/reports/top_components.xml" />
+		<report id="compare" name="%report.compare.name Compare Snapshots"
+				description="%report.compare.help"
+				file="META-INF/reports/compare.xml" />
+		<report id="suspects2" name="%report.suspects2.name Leak Suspects by Snapshot Comparison"
+				description="%report.suspects2.help"
+				file="META-INF/reports/suspects2.xml" />
+		<report id="overview2" name="%report.overview2.name Heap Dump Overview comparison"
+				description="%report.overview.help"
+				file="META-INF/reports/overview2.xml" />
+		<report id="query" name="%report.query.name"
+				description="%report.query.help"
+				file="META-INF/reports/query.xml" />
+	</extension>
+
+    <extension point="org.eclipse.mat.api.collectionExtractorProvider">
+        <provider impl="org.eclipse.mat.internal.collectionextract.KnownCollectionInfo">
+        </provider>
+    </extension>
+
+   <extension
+         point="org.eclipse.mat.api.threadResolver">
+      <resolver
+            impl="org.eclipse.mat.inspections.threads.ThreadDetailsResolver">
+      </resolver>
+   </extension>
+
+	<extension point="org.eclipse.core.contenttype.contentTypes">
+	    <content-type
+		      id="org.eclipse.mat.JavaHeapDump"
+		      name="%contentType.java_heap_dump"
+		      priority="normal">
+		</content-type>
+	</extension>
+	
+	<extension id="parse" point="org.eclipse.core.runtime.applications">
+		<application
+		      cardinality="singleton-global"
+		      thread="main"
+		      visible="true">
+			<run class="org.eclipse.mat.internal.apps.ParseSnapshotApp" />
+		</application>
+	</extension>
+	
+</plugin>

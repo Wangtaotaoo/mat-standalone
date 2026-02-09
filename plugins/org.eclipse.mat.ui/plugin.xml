@@ -1,0 +1,546 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<!--
+    Copyright (c) 2008, 2023 SAP AG and others.
+    All rights reserved. This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License 2.0
+    which accompanies this distribution, and is available at
+    https://www.eclipse.org/legal/epl-2.0/
+
+    SPDX-License-Identifier: EPL-2.0
+   
+    Contributors:
+        SAP AG - initial API and implementation
+        Andrew Johnson - accessibility preferences
+ -->
+
+<plugin>
+
+	<extension-point id="editorPanes" name="%extension-point.editorPanes.name"
+		schema="schema/editorPanes.exsd" />
+	<extension-point id="editorContributions"
+		name="%extension-point.editorContributions.name"
+		schema="schema/editorContributions.exsd" />
+	
+	<extension point="org.eclipse.ui.perspectives">
+		<perspective
+        class="org.eclipse.mat.ui.internal.Perspective"
+        icon="$nl$/icons/memory_analyzer_perspective.gif"
+        id="org.eclipse.mat.ui.perspective"
+        name="%perspective.name.Memory_Analysis">
+		</perspective>
+	</extension>
+
+	<extension point="org.eclipse.ui.editors">
+		<editor id="org.eclipse.mat.ui.editors.HeapEditor"
+		        name="%editor.name.Eclipse_Memory_Analyzer"
+		        class="org.eclipse.mat.ui.snapshot.editor.HeapEditor"
+		        contributorClass="org.eclipse.mat.ui.editor.MultiPaneEditorContributor"
+		        icon="$nl$/icons/heapobjects/heapdump16.gif">
+			<contentTypeBinding contentTypeId="org.eclipse.mat.JavaHeapDump" />
+		</editor>
+	</extension>
+
+	<extension point="org.eclipse.ui.views">
+		<category id="org.eclipse.mat"
+			name="%category.name.Memory_Analyzer_Views" />
+		<view category="org.eclipse.mat"
+			class="org.eclipse.mat.ui.internal.views.SnapshotHistoryView"
+			icon="$nl$/icons/heapdump_history.gif"
+			id="org.eclipse.mat.ui.views.SnapshotHistoryView"
+			name="%view.name.Heap_Dump_History" />
+		<view category="org.eclipse.mat"
+			class="org.eclipse.mat.ui.internal.views.SnapshotDetailsView"
+			icon="$nl$/icons/heapdump_details.gif"
+			id="org.eclipse.mat.ui.views.SnapshotDetailsView"
+			name="%view.name.Heap_Dump_Details" />
+		<view allowMultiple="true" category="org.eclipse.mat"
+			class="org.eclipse.mat.ui.snapshot.views.inspector.InspectorView"
+			icon="$nl$/icons/inspector_view.gif"
+			id="org.eclipse.mat.ui.views.InspectorView"
+			name="%view.name.Inspector" />
+		<view allowMultiple="true" category="org.eclipse.mat"
+			class="org.eclipse.mat.ui.internal.views.NotesView"
+			icon="$nl$/icons/notepad.gif"
+			id="org.eclipse.mat.ui.views.TextEditorView" name="%view.name.Notes" />
+		<view allowMultiple="false"
+        	category="org.eclipse.mat"
+        	class="org.eclipse.mat.ui.internal.views.NavigatorView"
+        	icon="$nl$/icons/navigator_view.gif"
+       	    id="org.eclipse.mat.ui.views.NavigatorView"
+            name="%view.name.Navigation_History"/>
+	    <view
+	        category="org.eclipse.mat"
+	        class="org.eclipse.mat.ui.compare.CompareBasketView"
+	        icon="$nl$/icons/compare.gif"
+	        id="org.eclipse.mat.ui.views.CompareBasketView"
+	        name="%view.name.Compare">
+	    </view>
+	</extension>
+
+	<extension point="org.eclipse.mat.ui.editorPanes">
+		<pane id="QueryResult" class="org.eclipse.mat.ui.internal.panes.QueryResultPane">
+			<result type="org.eclipse.mat.query.IResultTree"/>
+		</pane>
+		<pane id="QueryResultTable" class="org.eclipse.mat.ui.internal.panes.TableResultPane">
+			<result type="org.eclipse.mat.query.IResultTable"/>
+		</pane>
+		<pane id="QueryTextResult" class="org.eclipse.mat.ui.internal.panes.QueryTextResultPane">
+			<result type="org.eclipse.mat.query.IResult"/>
+			<result type="org.eclipse.mat.query.results.TextResult"/>
+			<result type="org.eclipse.mat.query.results.DisplayFileResult"/>
+		</pane>
+		<pane id="TextViewPane" class="org.eclipse.mat.ui.internal.panes.TextViewPane"/>
+		
+		<pane id="OverviewPane" class="org.eclipse.mat.ui.snapshot.panes.OverviewPane"/>
+		<pane id="OQL" class="org.eclipse.mat.ui.snapshot.panes.OQLPane">
+			<result type="org.eclipse.mat.snapshot.IOQLQuery$Result"/>
+		</pane>
+		<pane id="HistogramPane" class="org.eclipse.mat.ui.snapshot.panes.HistogramPane">
+			<result type="org.eclipse.mat.snapshot.Histogram"/>
+			<result type="org.eclipse.mat.snapshot.Histogram$ClassLoaderTree"/>
+			<result type="org.eclipse.mat.snapshot.Histogram$PackageTree"/>
+			<result type="org.eclipse.mat.snapshot.query.HistogramResult"/>
+		</pane>
+		<pane id="DominatorTreePane" class="org.eclipse.mat.ui.snapshot.panes.DominatorPane">
+			<result type="org.eclipse.mat.internal.snapshot.inspections.DominatorQuery$Tree"/>
+		</pane>
+		<pane id="Path2GCRootsPane" class="org.eclipse.mat.ui.snapshot.panes.Path2GCRootsPane">
+			<result type="org.eclipse.mat.internal.snapshot.inspections.Path2GCRootsQuery$Tree"/>
+		</pane>
+		<pane id="MultiplePath2GCRootsPane" class="org.eclipse.mat.ui.snapshot.panes.MultiplePath2GCRootsPane">
+			<result type="org.eclipse.mat.internal.snapshot.inspections.MultiplePath2GCRootsQuery$Tree"/>
+		</pane>
+		<pane id="CompareTablesPane" class="org.eclipse.mat.ui.snapshot.panes.CompareTablesPane">
+			<result type="org.eclipse.mat.internal.snapshot.inspections.CompareTablesQuery$TableComparisonResult"/>
+			<result type="org.eclipse.mat.internal.snapshot.inspections.CompareTablesQuery$ComparisonResultTable"/>
+			<result type="org.eclipse.mat.internal.snapshot.inspections.CompareTablesQuery$ComparisonResultTree"/>
+		</pane>
+		<pane
+			class="org.eclipse.mat.ui.snapshot.panes.BundlesPane"
+			id="BundlesPane">
+			<result
+				type="org.eclipse.mat.inspections.osgi.BundleRegistryQuery$BundleTreeResult">
+			</result>
+		</pane>
+	</extension>
+   
+	<extension point="org.eclipse.mat.ui.editorContributions">
+		<contribution
+			class="org.eclipse.mat.ui.snapshot.editor.HeapEditorContributions"
+			editorClass="org.eclipse.mat.ui.snapshot.editor.HeapEditor"
+			sequenceNr="1" />
+	</extension>
+
+	<extension point="org.eclipse.ui.commands">
+		<command
+			categoryId="org.eclipse.ui.category.edit"
+			description="%command.description.Query_Browser"
+			helpContextId="org.eclipse.mat.ui.query_browser"
+			id="org.eclipse.mat.ui.query.browser.QueryBrowser"
+			name="%command.name.Query_Browser">
+			<commandParameter
+				id="org.eclipse.mat.ui.query.browser.QueryBrowser.commandName"
+				name="%commandParameter.name.commandName"
+				optional="true">
+			</commandParameter>
+		</command>
+		<command
+			categoryId="org.eclipse.ui.category.navigate"
+			description="%command.description.Query_History"
+			helpContextId="org.eclipse.mat.ui.query_browser"
+			id="org.eclipse.mat.ui.query.browser.QueryHistory"
+			name="%command.name.Query_History">
+		</command>
+		<command
+			categoryId="org.eclipse.ui.category.help"
+			description="%command.description.Icon_Assist"
+			helpContextId="org.eclipse.mat.ui.help.icon_assist"
+			id="org.eclipse.mat.ui.actions.IconAssist"
+			name="%command.name.Icon_Assist">
+		</command>
+		<command
+			categoryId="org.eclipse.ui.category.edit"
+			description="%command.description.Execute_Inspection"
+			id="org.eclipse.mat.ui.actions.executeInspection"
+			name="%command.name.Execute_Inspection">
+			<commandParameter
+				id="org.eclipse.mat.ui.actions.executeInspection.commandName"
+				name="%commandParameter.name.commandName"
+				optional="false">
+			</commandParameter>
+		</command>
+		<command
+			categoryId="org.eclipse.ui.category.file"
+			description="%command.description.Acquire"
+			helpContextId="org.eclipse.mat.ui.help.acquire_arguments"
+			id="org.eclipse.mat.ui.acquire.HeapDump"
+			name="%command.name.Acquire">
+		</command>
+		<command
+			categoryId="org.eclipse.ui.category.file"
+			description="%command.description.openHeapDump"
+			helpContextId="org.eclipse.mat.ui.help.open_heapdump"
+			id="org.eclipse.mat.ui.actions.openHeapDump"
+			name="%command.name.openHeapDump">
+		</command>
+		<command
+			categoryId="org.eclipse.ui.category.help"
+			description="%command.description.Diagnostics"
+			id="org.eclipse.mat.ui.diagnostics.Diagnostics"
+			name="%command.name.Diagnostics">
+		</command>
+		<command
+			categoryId="org.eclipse.ui.category.file"
+			description="%command.description.openSampleHeapDump"
+			helpContextId="org.eclipse.mat.ui.help.open_heapdump"
+			id="org.eclipse.mat.ui.actions.openSampleHeapDump"
+			name="%command.name.openSampleHeapDump">
+			<commandParameter
+				id="org.eclipse.mat.ui.actions.openSampleHeapDump.heapDump"
+				name="%commandParameter.name.openSampleHeapDump.heapDump"
+				optional="false"/>
+			<commandParameter
+				id="org.eclipse.mat.ui.actions.openSampleHeapDump.command"
+				name="%commandParameter.name.openSampleHeapDump.command"
+				optional="true"/>
+			<commandParameter
+				id="org.eclipse.mat.ui.actions.openSampleHeapDump.oqlParms"
+				name="%commandParameter.name.openSampleHeapDump.oqlParms"
+				optional="true"/>
+		</command>
+		<command
+			categoryId="org.eclipse.ui.category.navigate"
+			description="%command.description.TabMenu"
+			helpContextId="org.eclipse.mat.ui.help.tab_menu"
+			id="org.eclipse.mat.ui.editor.tabMenu"
+			name="%command.name.TabMenu">
+		</command>
+		<command
+			categoryId="org.eclipse.ui.category.edit"
+			description="%command.description.OQLExec"
+			helpContextId="org.eclipse.mat.ui.help.oql"
+			id="org.eclipse.mat.ui.actions.executeOQL"
+			name="%command.name.OQLExec">
+		</command>
+		<command
+			categoryId="org.eclipse.ui.category.edit"
+			description="%command.description.OQLAssist"
+			helpContextId="org.eclipse.mat.ui.help.oql"
+			id="org.eclipse.mat.ui.actions.assistOQL"
+			name="%command.name.OQLAssist">
+		</command>
+	</extension>
+
+	<extension point="org.eclipse.ui.handlers">
+		<handler
+			class="org.eclipse.mat.ui.internal.browser.QueryBrowserHandler"
+			commandId="org.eclipse.mat.ui.query.browser.QueryBrowser"
+			helpContextId="org.eclipse.mat.ui.help.query_browser">
+		</handler>
+		<handler
+			class="org.eclipse.mat.ui.internal.browser.QueryHistoryHandler"
+			commandId="org.eclipse.mat.ui.query.browser.QueryHistory"
+			helpContextId="org.eclipse.mat.ui.help.query_browser">
+		</handler>
+		<handler
+			class="org.eclipse.mat.ui.snapshot.actions.OpenIconAssistAction$Handler"
+			commandId="org.eclipse.mat.ui.actions.IconAssist"
+			helpContextId="org.eclipse.mat.ui.help.icon_assist">
+		</handler>
+		<handler
+			class="org.eclipse.mat.ui.internal.actions.ExecuteInspectionHandler"
+			commandId="org.eclipse.mat.ui.actions.executeInspection">
+		</handler>
+		<handler
+			class="org.eclipse.mat.ui.internal.acquire.AcquireSnapshotAction$Handler"
+			commandId="org.eclipse.mat.ui.acquire.HeapDump"
+			helpContextId="org.eclipse.mat.ui.help.acquire_arguments">
+		</handler>
+		<handler
+			class="org.eclipse.mat.ui.internal.diagnostics.DiagnosticsWizardAction$Handler"
+			commandId="org.eclipse.mat.ui.diagnostics.Diagnostics">
+		</handler>
+		<handler
+			class="org.eclipse.mat.ui.snapshot.actions.OpenSnapshotAction$Handler"
+			commandId="org.eclipse.mat.ui.actions.openHeapDump"
+			helpContextId="org.eclipse.mat.ui.help.open_heapdump">
+		</handler>
+		<handler
+			class="org.eclipse.mat.ui.snapshot.actions.OpenSampleHeapDumpAction$Handler"
+			commandId="org.eclipse.mat.ui.actions.openSampleHeapDump"
+			helpContextId="org.eclipse.mat.ui.help.open_heapdump">
+		</handler>
+		<handler
+			class="org.eclipse.mat.ui.editor.MultiPaneEditor$Handler"
+			commandId="org.eclipse.mat.ui.editor.tabMenu"
+			helpContextId="org.eclipse.mat.ui.help.tab_menu">
+		</handler>
+		<handler
+			class="org.eclipse.mat.ui.snapshot.panes.OQLPane$ExecuteOQLHandler"
+			commandId="org.eclipse.mat.ui.actions.executeOQL"
+			helpContextId="org.eclipse.mat.ui.help.oql">
+		</handler>
+		<handler
+			class="org.eclipse.mat.ui.snapshot.panes.OQLPane$ContentAssistOQLHandler"
+			commandId="org.eclipse.mat.ui.actions.assistOQL"
+			helpContextId="org.eclipse.mat.ui.help.oql">
+		</handler>
+	</extension>
+
+	<!-- Also define the scheme id here as well as in o.e.mat.ui.rcp 
+		but have it inherit here from the standard Eclipse in case MAT is loaded 
+		into the IDE. -->
+	<extension point="org.eclipse.ui.bindings">
+		<scheme
+			id="org.eclipse.mat.scheme"
+			parentId="org.eclipse.ui.defaultAcceleratorConfiguration"
+			name="%scheme.name.Memory_Analyzer_Default" />
+		<key
+			commandId="org.eclipse.mat.ui.query.browser.QueryBrowser"
+			contextId="org.eclipse.ui.contexts.window"
+			schemeId="org.eclipse.mat.scheme" sequence="M1+Q">
+		</key>
+		<key
+			commandId="org.eclipse.mat.ui.query.browser.QueryHistory"
+			contextId="org.eclipse.ui.contexts.window"
+			schemeId="org.eclipse.mat.scheme" sequence="M1+H">
+		</key>
+		<key
+			commandId="org.eclipse.mat.ui.actions.IconAssist"
+			contextId="org.eclipse.ui.contexts.window"
+			schemeId="org.eclipse.mat.scheme" sequence="Alt+I">
+		</key>
+		<key
+			commandId="org.eclipse.mat.ui.acquire.HeapDump"
+			contextId="org.eclipse.ui.contexts.window"
+			schemeId="org.eclipse.mat.scheme" sequence="Alt+A">
+		</key>
+		<key
+			commandId="org.eclipse.mat.ui.editor.tabMenu"
+			contextId="org.eclipse.mat.ui.editor"
+			schemeId="org.eclipse.mat.scheme" sequence="M1+F10">
+		</key>
+		<key
+			commandId="org.eclipse.ui.window.resetPerspective"
+			contextId="org.eclipse.ui.contexts.window"
+			schemeId="org.eclipse.mat.scheme"
+			sequence="M1+M2+P">
+		</key>
+		<key
+			commandId="org.eclipse.ui.navigate.nextTab"
+			contextId="org.eclipse.ui.contexts.window"
+			schemeId="org.eclipse.mat.scheme"
+			sequence="M1+PAGE_DOWN">
+		</key>
+		<key
+			commandId="org.eclipse.ui.navigate.previousTab"
+			contextId="org.eclipse.ui.contexts.window"
+			schemeId="org.eclipse.mat.scheme"
+			sequence="M1+PAGE_UP">
+		</key>
+		<key
+			commandId="org.eclipse.mat.ui.actions.executeOQL"
+			contextId="org.eclipse.mat.ui.editor"
+			schemeId="org.eclipse.mat.scheme" sequence="M1+ENTER">
+		</key>
+		<key
+			commandId="org.eclipse.mat.ui.actions.executeOQL"
+			contextId="org.eclipse.mat.ui.editor"
+			schemeId="org.eclipse.mat.scheme" sequence="F5">
+		</key>
+		<key
+			commandId="org.eclipse.mat.ui.actions.assistOQL"
+			contextId="org.eclipse.mat.ui.editor"
+			schemeId="org.eclipse.mat.scheme" sequence="CTRL+SPACE">
+		</key>	</extension>
+
+	<extension point="org.eclipse.ui.contexts">
+		<context
+			name="%context.name.Editor"
+			id="org.eclipse.mat.ui.editor"
+			parentId="org.eclipse.ui.contexts.window">
+		</context>
+	</extension>
+
+	<extension point="org.eclipse.mat.report.query">
+		<query impl="org.eclipse.mat.ui.snapshot.actions.CopyActions$Address" />
+		<query impl="org.eclipse.mat.ui.snapshot.actions.CopyActions$FQClassName" />
+		<query impl="org.eclipse.mat.ui.snapshot.actions.CopyActions$Value" />
+		<query impl="org.eclipse.mat.ui.snapshot.actions.SaveValueAsQuery" />
+		<query impl="org.eclipse.mat.ui.snapshot.actions.CopyOQL" />
+	</extension>
+
+   <extension point="org.eclipse.ui.intro.configExtension">
+      <standbyContentPart
+            id="org.eclipse.mat.cheatsheet"
+            class="org.eclipse.mat.ui.internal.CheatSheetStandbyContent"
+            pluginId="org.eclipse.mat.ui"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="org.eclipse.mat.ui.internal.UIPreferencePage"
+            id="org.eclipse.mat.ui.Preferences"
+            name="%preferences.name">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.eclipse.mat.ui.internal.PreferenceInitializer">
+      </initializer>
+   </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <wizard
+            class="org.eclipse.mat.ui.internal.acquire.AcquireSnapshotAction$AcquireWizard"
+            finalPerspective="org.eclipse.mat.ui.perspective"
+            icon="$nl$/icons/acquire.gif"
+            id="org.eclipse.mat.ui.wizard"
+            name="%wizard.new.name"
+            project="false">
+         <description>
+            %wizard.new.description
+         </description>
+      </wizard>
+   </extension>
+   <extension
+         point="org.eclipse.ui.importWizards">
+      <wizard
+            class="org.eclipse.mat.ui.internal.acquire.AcquireSnapshotAction$AcquireWizard"
+            icon="$nl$/icons/acquire.gif"
+            id="org.eclipse.mat.ui.wizard2"
+            name="%wizard.import.name">
+         <description>
+            %wizard.import.description
+         </description>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.themes">
+      <themeElementCategory
+            id="org.eclipse.mat.ui.themeElementCategory"
+            label="%themecategory.name.Memory_Analyzer">
+         <description>
+            %themecategory.description.memoryanalyzer
+         </description>
+      </themeElementCategory>
+      <colorDefinition
+            categoryId="org.eclipse.mat.ui.themeElementCategory"
+            id="org.eclipse.mat.ui.oql_comment"
+            isEditable="true"
+            label="%color.oql_comment.label"
+            value="93,142,116">
+         <description>
+            %color.oql_comment.description
+         </description>
+      </colorDefinition>
+      <colorDefinition
+            categoryId="org.eclipse.mat.ui.themeElementCategory"
+            id="org.eclipse.mat.ui.oql_keyword"
+            isEditable="true"
+            label="%color.oql_keyword.label"
+            value="146,55,117">
+         <description>
+            %color.oql_keyword.description
+         </description>
+      </colorDefinition>
+      <theme id="org.eclipse.ui.ide.systemDefault">
+         <colorOverride
+            id="org.eclipse.mat.ui.oql_comment"
+            value="COLOR_LIST_FOREGROUND">
+         </colorOverride>
+         <colorOverride
+            id="org.eclipse.mat.ui.oql_keyword"
+            value="COLOR_LIST_FOREGROUND">
+         </colorOverride>
+      </theme>
+      <fontDefinition
+            categoryId="org.eclipse.mat.ui.themeElementCategory"
+            defaultsTo="org.eclipse.jface.textfont"
+            id="org.eclipse.mat.ui.notesfont"
+            isEditable="true"
+            label="%font.notes_label">
+      </fontDefinition>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:help?before=additions">
+         <separator
+               name="org.eclipse.mat.ui.helpseparator"
+               visible="true">
+         </separator>
+      </menuContribution>
+      <menuContribution
+            locationURI="menu:help?after=org.eclipse.mat.ui.helpseparator">
+         <command
+               commandId="org.eclipse.mat.ui.actions.IconAssist"
+               helpContextId="org.eclipse.mat.ui.help.icon_assist"
+               label="%menu.label.Icon_Assist"
+               tooltip="%menu.tooltip.Open_Icon_Assist">
+            <visibleWhen checkEnabled="true">
+               <with variable="activeWorkbenchWindow.activePerspective">
+                  <equals value="org.eclipse.mat.ui.perspective"/>
+               </with>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="menu:file?before=additions">
+         <command
+               commandId="org.eclipse.mat.ui.acquire.HeapDump"
+               helpContextId="org.eclipse.mat.ui.help.acquire_arguments"
+               icon="$nl$/icons/acquire.gif"
+               id="org.eclipse.mat.ui.openAcquireDialog"
+               label="%menu.label.Acquire"
+               style="push"
+               tooltip="%menu.tooltip.Acquire">
+            <visibleWhen checkEnabled="true">
+               <with variable="activeWorkbenchWindow.activePerspective">
+                  <equals value="org.eclipse.mat.ui.perspective"/>
+               </with>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="menu:file?after=org.eclipse.mat.ui.openAcquireDialog">
+         <command
+               commandId="org.eclipse.mat.ui.actions.openHeapDump"
+               helpContextId="org.eclipse.mat.ui.help.open_heapdump"
+               icon="$nl$/icons/open_snapshot.gif"
+               id="org.eclipse.mat.ui.openHeapDump"
+               label="%menu.label.Open_Heap_DUMP___"
+               style="push"
+               tooltip="%menu.tooltip.Open_Heap_Dump">
+            <visibleWhen checkEnabled="true">
+               <with variable="activeWorkbenchWindow.activePerspective">
+                  <equals value="org.eclipse.mat.ui.perspective"/>
+               </with>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="menu:help">
+         <command
+               commandId="org.eclipse.mat.ui.diagnostics.Diagnostics"
+               helpContextId="org.eclipse.mat.ui.help.diagnostics"
+               icon="$nl$/icons/thread.gif"
+               id="org.eclipse.mat.ui.openDiagnosticsDialog"
+               label="%menu.label.Diagnostics"
+               style="push"
+               tooltip="%menu.tooltip.Diagnostics">
+            <visibleWhen checkEnabled="true">
+               <with variable="activeWorkbenchWindow.activePerspective">
+                  <equals value="org.eclipse.mat.ui.perspective"/>
+               </with>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+   </extension>
+
+</plugin>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<!--
+    Copyright (c) 2008, 2022 SAP AG and others
+    All rights reserved. This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License 2.0
+    which accompanies this distribution, and is available at
+    https://www.eclipse.org/legal/epl-2.0/
+
+    SPDX-License-Identifier: EPL-2.0
+   
+    Contributors:
+        SAP AG - initial implementation
+ -->
+<plugin>   
+   <extension
+         id="application"
+         point="org.eclipse.core.runtime.applications">
+      <application
+            cardinality="singleton-global"
+            thread="main"
+            visible="true">
+         <run
+               class="org.eclipse.mat.tests.regression.Application">
+         </run>
+      </application>
+   </extension>
+
+	<extension id="junit4Runner" point="org.eclipse.core.runtime.applications">
+		<application cardinality="singleton-global" thread="main" visible="true">
+			<run class="org.eclipse.mat.tests.JUnit4TestRunner" />
+		</application>
+	</extension>
+    
+   <extension
+         point="org.eclipse.mat.report.report">
+      <report
+            description="regression tests specification"
+            file="META-INF/tests/regression.xml"
+            id="regression"
+            name="Regression Test Suite">
+      </report>
+      <report
+            file="META-INF/tests/performance.xml"
+            id="performance"
+            name="Performance Test Suite">
+      </report>
+      <report
+            file="META-INF/tests/allqueries.xml"
+            id="all"
+            name="All Queries Test Suite">
+      </report>
+   </extension>
+   <extension
+         point="org.eclipse.mat.report.query">
+      <query
+            impl="org.eclipse.mat.tests.regression.query.DomTreeRegTest">
+      </query>
+      <query
+            impl="org.eclipse.mat.tests.regression.query.Paths2GCRootsRegTest">
+      </query>
+      <query
+            impl="org.eclipse.mat.tests.regression.query.MergedPathsRegTest">
+      </query>
+      <query
+            impl="org.eclipse.mat.tests.regression.query.RetainedSizeForHistogramQuery">
+      </query>
+      <query
+            impl="org.eclipse.mat.tests.queries.Context$ContextObjectQuery">
+      </query>
+      <query
+            impl="org.eclipse.mat.tests.queries.Context$ContextObjectsQuery">
+      </query>
+      <query
+            impl="org.eclipse.mat.tests.queries.Context$ContextObjectSetQuery">
+      </query>
+      <query
+            impl="org.eclipse.mat.tests.queries.Context$ContextObjectSetsQuery">
+      </query>
+      <query
+            impl="org.eclipse.mat.tests.queries.Context$ResultTableQuery">
+      </query>
+      <query
+            impl="org.eclipse.mat.tests.queries.Context$ResultTreeQuery">
+      </query>
+      <query
+            impl="org.eclipse.mat.tests.queries.Context$StructuredResultQuery">
+      </query>
+      <query
+            impl="org.eclipse.mat.tests.queries.Context$StructuredResultsQuery">
+      </query>
+      <query
+            impl="org.eclipse.mat.tests.queries.Context$StructuredResults2Query">
+      </query>
+      <query
+            impl="org.eclipse.mat.tests.queries.Context$SupplementTest">
+      </query>
+      <query
+            impl="org.eclipse.mat.tests.queries.Context$SecondarySnapshotQuery">
+      </query>
+      <query
+            impl="org.eclipse.mat.tests.queries.Context$OptionalObjectQuery">
+      </query>
+      <query
+            impl="org.eclipse.mat.tests.queries.Context$OptionalContextObjectQuery">
+      </query>
+      <query
+            impl="org.eclipse.mat.tests.queries.CompositeResultTest">
+      </query>
+      <query
+            impl="org.eclipse.mat.tests.queries.Secondary">
+      </query>
+   </extension>
+
+</plugin>

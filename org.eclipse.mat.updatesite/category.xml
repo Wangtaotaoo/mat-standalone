@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Copyright (c) 2010, 2022 SAP AG and others
+    All rights reserved. This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License 2.0
+    which accompanies this distribution, and is available at
+    https://www.eclipse.org/legal/epl-2.0/
+
+    SPDX-License-Identifier: EPL-2.0
+   
+    Contributors:
+        SAP AG - initial implementation
+ -->
+<site>
+   <feature url="features/org.eclipse.mat.chart.feature_0.0.0.jar" id="org.eclipse.mat.chart.feature" version="0.0.0">
+      <category name="Memory Analyzer IDE"/>
+   </feature>
+   <feature url="features/org.eclipse.mat.feature_0.0.0.jar" id="org.eclipse.mat.feature" version="0.0.0">
+      <category name="Memory Analyzer IDE"/>
+   </feature>
+   <feature url="features/org.eclipse.mat.ui.rcp.feature_0.0.0.qualifier.jar" id="org.eclipse.mat.ui.rcp.feature" version="0.0.0">
+      <category name="Memory Analyzer RCP"/>
+   </feature>
+   <category-def name="Memory Analyzer IDE" label="Memory Analyzer for Eclipse IDE">
+      <description>
+         Memory Analyzer features suitable for installing into or updating an Eclipse IDE.
+      </description>
+   </category-def>
+   <category-def name="Memory Analyzer RCP" label="Stand-alone Memory Analyzer">
+      <description>
+         Memory Analyzer features suitable for updating a stand-alone version of Memory Analyzer which is based on Eclipse RCP.
+      </description>
+   </category-def>
+   <bundle id="org.eclipse.birt.core" version="0.0.0"/>
+   <bundle id="org.eclipse.birt.chart.engine" version="0.0.0"/>
+   <bundle id="org.eclipse.birt.chart.device.extension" version="0.0.0"/>
+   <bundle id="org.eclipse.birt.chart.device.swt" version="0.0.0"/>
+   <bundle id="org.eclipse.birt.chart.engine.extension" version="0.0.0"/>
+</site>

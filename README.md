@@ -1,5 +1,7 @@
 # MAT Standalone — Eclipse MAT Heap Analysis Engine (OSGi-Free)
 
+English | [中文](README_CN.md)
+
 A standalone, zero-dependency Java library extracted from [Eclipse Memory Analyzer (MAT)](http://eclipse.dev/mat/). All OSGi and Eclipse Runtime dependencies have been stripped, producing a single JAR that can be embedded in any JVM project.
 
 ## Features
